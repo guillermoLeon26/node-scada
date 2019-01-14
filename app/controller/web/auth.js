@@ -7,7 +7,7 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = async (req, res, next) => {
   try {
     const user = await User.login(req.body);
-    console.log('controlador', user);
+    console.log('controlador', user.statusCode);
 
     req.session.isLoggedIn = true;
     req.session.user = user;

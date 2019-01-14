@@ -15,7 +15,7 @@ const userSchema = new Schema({
 });
 
 userSchema.statics.registrarUsuario = async function (data) {
-  const {email, password} = data;
+  const { email, password } = data;
   
   try {
     const hashPassword = await bcrypt.hash(password, 12);
@@ -27,6 +27,39 @@ userSchema.statics.registrarUsuario = async function (data) {
     return user;
   } catch (error) {
     console.log(error);
+  }
+}
+
+userSchema.statics.login = async function (data) {
+  const { email, password } = data;
+  console.log(email, password);
+
+  try {
+    const user = await this.findOne({ email: email });
+
+    console.log(!user);
+
+    if (!user) {
+      const error = new Error('Un usuario con este email no se encuentra.');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    const isEqual = await bcrypt.compare(password, user.password);
+
+    if (!isEqual) {
+      const error = new Error('Password Incorrecta!');
+      error.statusCode = 401;
+      throw error;
+    }
+
+    return user;
+  } catch (error) {
+    console.log(error);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    return error;
   }
 }
 

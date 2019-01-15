@@ -1,6 +1,8 @@
 const inData = require('../../../config/inData');
 const cookies = require('../../../config/cookies');
 const csrf = require('../../../config/csrf');
+const errorController = require('../../controller/web/error');
+
 const homeRoutes = require('./home');
 const authRoutes = require('./auth');
 
@@ -11,4 +13,15 @@ module.exports = app => {
 
   app.use('/admin', homeRoutes);
   app.use('/admin', authRoutes);
+
+  //--------------------Manejo de pagina de errores------------------------
+  app.get('/500', errorController.get500);
+  app.use(errorController.get404);
+  /* -------Activar en produccion, por ahora sirve para ver errores en render de las vistas
+    app.use((error, req, res, next) => { 
+    res.status(500).render('error/500', {
+      isAuthenticated: req.session.isLoggedIn
+    });
+  });
+  */
 }

@@ -1,14 +1,16 @@
 const User = require('../../models/user');
 
 exports.getLogin = (req, res, next) => {
-  res.render('auth/login');
+  res.render('auth/login', {
+    errorMessage: null,
+    oldInput: null
+  });
 }
 
 exports.postLogin = async (req, res, next) => {
   try {
     const user = await User.login(req.body);
-    console.log('controlador', user.statusCode);
-
+    
     req.session.isLoggedIn = true;
     req.session.user = user;
 
@@ -18,7 +20,16 @@ exports.postLogin = async (req, res, next) => {
 
     res.redirect('/admin');
   } catch (error) {
-    console.log('controlador', error);
+    if (error.statusCode === 401) {
+      return res.status(422).render('auth/login', {
+        errorMessage: error.message,
+        oldInput: {
+          email: req.body.email,
+          password: req.body.email.password
+        }
+      });
+    }
+
     if (!error.statusCode) {
       error.statusCode = 500;
     }

@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const ValidationError = require('../error');
-
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -34,18 +32,14 @@ userSchema.statics.registrarUsuario = async function (data) {
 
 userSchema.statics.login = async function (data) {
   const { email, password } = data;
-  console.log(email, password);
-
+  
   try {
     const user = await this.findOne({ email: email });
 
-    console.log(!user);
-
     if (!user) {
-      throw new ValidationError('Un usuario con este email no se encuentra.', 401);
-      //const error = new Error('Un usuario con este email no se encuentra.');
-      //error.statusCode = 401;
-      //throw error;
+      const error = new Error('Un usuario con este email no se encuentra.');
+      error.statusCode = 401;
+      throw error;
     }
 
     const isEqual = await bcrypt.compare(password, user.password);
@@ -62,7 +56,7 @@ userSchema.statics.login = async function (data) {
     if (!error.statusCode) {
       error.statusCode = 500;
     }
-    return error;
+    throw error;
   }
 }
 

@@ -54,7 +54,6 @@ userSchema.statics.login = async function (data) {
 
     return user;
   } catch (error) {
-    console.log(error);
     if (!error.statusCode) {
       error.statusCode = 500;
     }

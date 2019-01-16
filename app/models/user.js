@@ -37,16 +37,18 @@ userSchema.statics.login = async function (data) {
     const user = await this.findOne({ email: email });
 
     if (!user) {
-      const error = new Error('Un usuario con este email no se encuentra.');
+      const error = new Error();
       error.statusCode = 401;
+      error.lista = [ { msg: 'Un usuario con este email no se encuentra.' } ];
       throw error;
     }
 
     const isEqual = await bcrypt.compare(password, user.password);
 
     if (!isEqual) {
-      const error = new Error('Password Incorrecta!');
+      const error = new Error();
       error.statusCode = 401;
+      error.lista = [ { msg: 'Password Incorrecta!' } ];
       throw error;
     }
 

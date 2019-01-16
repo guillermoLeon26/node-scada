@@ -1,8 +1,10 @@
 const express = require('express');
 
+const isAuth = require('../../middleware/is-auth');
+
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', isAuth, (req, res, next) => {
     res.render('admin/home');
 });
 

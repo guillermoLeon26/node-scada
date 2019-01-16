@@ -1,14 +1,24 @@
 const User = require('../../models/user');
+const { validationResult } = require('express-validator/check');
 
 exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
-    errorMessage: null,
+    errors: null,
     oldInput: null
   });
 }
 
 exports.postLogin = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      const err0 = new Error();
+      err0.statusCode = 401;
+      err0.lista = errors.array();
+      throw err0;
+    }
+
     const user = await User.login(req.body);
     
     req.session.isLoggedIn = true;
@@ -16,16 +26,20 @@ exports.postLogin = async (req, res, next) => {
 
     const err = await req.session.save();
 
-    if (err) throw new Error('Ocurrio un error en el acceso.');
+    if (err) {
+      const err1 = new Error();
+      err1.lista = [ { msg: 'Ocurrio un error en el acceso.' } ];
+      throw err1;
+    }
 
     res.redirect('/admin');
   } catch (error) {
     if (error.statusCode === 401) {
       return res.status(422).render('auth/login', {
-        errorMessage: error.message,
+        errors: error.lista,
         oldInput: {
           email: req.body.email,
-          password: req.body.email.password
+          password: req.body.password
         }
       });
     }
@@ -36,3 +50,12 @@ exports.postLogin = async (req, res, next) => {
     next(error);
   }
 }
+
+exports.postLogout =  async (req, res, next) => {
+  try {
+    await req.session.destroy();
+    res.redirect('/admin/login');
+  } catch (error) {
+    console.log(error);  
+  }
+};

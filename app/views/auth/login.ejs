@@ -23,11 +23,15 @@
     <b>Admin</b>
   </div>
 
-  <% if(errorMessage) { %>
+  <% if(errors) { %>
   <div class="alert alert-danger alert-dismissible">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
     <h4><i class="icon fa fa-ban"></i> Alert!</h4>
-    <%= errorMessage %>
+    <ul>
+      <% errors.forEach(function(error){ %>
+        <li><%= error.msg %></li>
+      <%})%>
+    </ul>
   </div>
   <% } %>
 

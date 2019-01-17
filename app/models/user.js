@@ -61,4 +61,30 @@ userSchema.statics.login = async function (data) {
   }
 }
 
+userSchema.statics.usuarios = async function (req) {
+  const currentPage = req.query.page || 1;
+  const perPage = 5;
+
+  try {
+    const totalItems = await this.find().countDocuments();
+    const users = await this.find()
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+    
+    return {
+      users: users,
+      pagination: {
+        currentPage: currentPage,
+        totalItems: totalItems,
+        perPage: perPage
+      }
+    }
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    throw error;
+  }
+}
+
 module.exports = mongoose.model('User', userSchema);

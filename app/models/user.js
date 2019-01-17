@@ -64,6 +64,7 @@ userSchema.statics.login = async function (data) {
 userSchema.statics.usuarios = async function (req) {
   const currentPage = req.query.page || 1;
   const perPage = 5;
+  const maxPage
 
   try {
     const totalItems = await this.find().countDocuments();

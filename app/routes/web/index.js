@@ -7,6 +7,7 @@ const User = require('../../models/user');
 const homeRoutes = require('./home');
 const authRoutes = require('./auth');
 const userRoutes = require('./user');
+const equipmentRotes = require('./equipment');
 
 module.exports = app => {
   inData(app) // Configuracion para el cambio de los datos de entrada.
@@ -36,6 +37,7 @@ module.exports = app => {
   app.use('/admin', homeRoutes);
   app.use('/admin', authRoutes);
   app.use('/admin/user', userRoutes);
+  app.use('/admin/equipment', equipmentRotes);
 
   //--------------------Manejo de pagina de errores------------------------
   app.get('/500', errorController.get500);

@@ -28,7 +28,11 @@
             <td><%= user._id %></td>
             <td><%= user.email %></td>
             <td>
-              <button type="button" class="btn btn-danger">Eliminar</button>
+              <form action="/admin/user/delete" method="POST">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_id" value="<%= user._id %>">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              </form>
             </td>
           </tr>
         <% }) %>

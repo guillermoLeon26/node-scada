@@ -56,6 +56,9 @@ exports.postLogout =  async (req, res, next) => {
     await req.session.destroy();
     res.redirect('/admin/login');
   } catch (error) {
-    console.log(error);  
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(error); 
   }
 };

@@ -18,15 +18,27 @@ userSchema.statics.registrarUsuario = async function (data) {
   const { email, password } = data;
   
   try {
+    const user = await this.findOne({ email: email });
+
+    if (user) {
+      const error = new Error();
+      error.statusCode = 401;
+      error.lista = [ { msg: 'Ya existe un usuario con este correo.' } ];
+      throw error;
+    }
+
     const hashPassword = await bcrypt.hash(password, 12);
-    const user = await this.create({
+    user = await this.create({
       email: email,
       password: hashPassword
     });
 
     return user;
   } catch (error) {
-    console.log(error);
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    throw error;
   }
 }
 

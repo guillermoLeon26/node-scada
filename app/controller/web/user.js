@@ -1,5 +1,6 @@
 const User = require('../../models/user');
 
+// Lista de usuarios
 exports.getIndex = async (req, res, next) => {
   try {
     const data = await User.usuarios(req);
@@ -13,12 +14,14 @@ exports.getIndex = async (req, res, next) => {
   }
 }
 
+// Vista de creacion de usuario
 exports.getCreate = (req, res, next) => {
   res.render('admin/user/create', {
     errors: null
   });
 }
 
+// Guardar usuario
 exports.postStoreUser = async (req, res, next) => {
   try {
     await User.registrarUsuario(req.body);

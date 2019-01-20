@@ -1,0 +1,82 @@
+<%- include('../../layout/main-header') %>
+</head>
+<%- include('../../layout/header') %>
+<%- include('../../layout/sidebar') %>
+<%- include('../../layout/content') %>
+
+<section class="content-header">
+  <h1>Crear Equipo</h1>
+</section>
+
+<section class="content container-fluid">
+  <div class="col-xs-12">
+    <% if(errors) { %>
+      <div class="alert alert-danger alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="icon fa fa-ban"></i> Alert!</h4>
+        <ul>
+          <% errors.forEach(function(error){ %>
+            <li><%= error.msg %></li>
+          <%})%>
+        </ul>
+      </div>
+      <% } %>
+  </div>
+
+  <div class="col-md-6">
+    <div class="box box-primary">
+
+      <form role="form" action="/admin/equipment" method="POST">
+        <input type="hidden" name="_csrf" value="<%= csrfToken %>">  
+        <div class="box-body">
+
+          <% if (oldInput) {%>
+            <div class="form-group">
+              <label for="codigo">Codigo</label>
+              <input type="text" class="form-control" id="codigo" name="codigo" value="<%= oldInput.codigo %>">
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre" value="<%= oldInput.nombre %>">
+            </div>
+            <div class="form-group">
+              <label for="marca">Marca</label>
+              <input type="text" class="form-control" id="marca" name="marca" value="<%= oldInput.marca %>">
+            </div>
+            <div class="form-group">
+              <label for="modelo">Modelo</label>
+              <input type="text" class="form-control" id="modelo" name="modelo" value="<%= oldInput.modelo %>">
+            </div>
+          <% } else { %>
+            <div class="form-group">
+              <label for="codigo">Codigo</label>
+              <input type="text" class="form-control" id="codigo" name="codigo">
+            </div>
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" class="form-control" id="nombre" name="nombre">
+            </div>
+            <div class="form-group">
+              <label for="marca">Marca</label>
+              <input type="text" class="form-control" id="marca" name="marca">
+            </div>
+            <div class="form-group">
+              <label for="modelo">Modelo</label>
+              <input type="text" class="form-control" id="modelo" name="modelo">
+            </div>
+          <% } %>
+
+        </div>
+        <div class="box-footer">
+          <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<%- include('../../layout/footer') %>
+<%- include('../../layout/main-footer') %>
+</body>
+</html>

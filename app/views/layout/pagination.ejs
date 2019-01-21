@@ -1,32 +1,38 @@
 <% 
   var firstPage = 1;
-  if (pagination.viewPage > pagination.maxPage) {
-    pagination.viewPage = pagination.maxPage;
-    pagination.offset = 0;
+  var nextPage = parseInt(pagination.currentPage) + 1;
+  var lastPage = pagination.maxPage;
+  var currentPage = parseInt(pagination.currentPage);
+  var maxPage = pagination.maxPage;
+  var offset = pagination.offset;
+  var cantLinks = pagination.viewPage;
+  
+  if (cantLinks > lastPage) {
+    offset = 0;
   }
 %>
 
-<% if (pagination.totalItems > 0) {%>
+<% if (pagination.totalItems > 0) { %>
 
 	<ul class="pagination">
     <!-- Botón para navegar a la primera página -->
-    <% if (pagination.currentPage === firstPage) { %>
+    <% if (currentPage == firstPage) { %>
       <li class="disabled"><span>&laquo;&laquo;</span></li>
     <% } else { %>
       <li><a href="<%= pagination.url + '?page=' + firstPage %>">&laquo;&laquo;</a></li>
     <% } %>
 
     <!-- Botón para navegar a la página anterior -->
-    <% if (pagination.currentPage === firstPage) {%>
+    <% if (currentPage == firstPage) {%>
       <li class="disabled"><span>&laquo;</span></li>
     <% } else { %>
-      <li><a href="<%= pagination.url + '?page=' + (pagination.currentPage - 1) %>">&laquo;</a></li>
+      <li><a href="<%= pagination.url + '?page=' + (currentPage - 1) %>">&laquo;</a></li>
     <% } %>
 
     <!-- Mostrar la numeración de las páginas, partiendo de la página actual hasta el maximo definido en $pagination.maxPages -->
-    <% if (pagination.currentPage <= pagination.viewPage - pagination.offset) { %>
-      <% for(i = firstPage; i <= pagination.viewPage; i++) { %>
-        <% if (i === pagination.currentPage) {%>
+    <% if (currentPage <= cantLinks - offset) { %>
+      <% for(i = firstPage; i <= cantLinks; i++) { %>
+        <% if (i == currentPage) {%>
           <li class="active"><span><%= i %></span></li>
         <% } else { %>
           <li><a href="<%= pagination.url + '?page=' + i %>"><%= i %></a></li>
@@ -34,35 +40,35 @@
       <% } %>
     <% } %>
 
-    <% if ((pagination.currentPage > pagination.viewPage - pagination.offset) && (pagination.currentPage <= pagination.totalItems - pagination.offset)) { %>
-      <% if ( pagination.maxPage === pagination.totalItems ) {
-        pagination.offset = pagination.totalItems - 1;
+    <% if ((currentPage > cantLinks - offset) && (currentPage <= lastPage - offset)) { %>
+      <% if ( cantLinks == lastPage ) {
+        offset = lastPage;
       } %>
 
-      <% for(i = pagination.currentPage - pagination.offset; i <= pagination.currentPage; i++) { %>
-        <% if (i === pagination.currentPage) {%>
+      <% for(i = currentPage - offset; i <= currentPage; i++) { %>
+        <% if (i == currentPage) {%>
           <li class="active"><span><%= i %></span></li>
         <% } else { %>
           <li><a href="<%= pagination.url + '?page=' + i %>"><%= i %></a></li>
         <% } %>
       <% } %>
 
-      <% if (pagination.viewPage != pagination.totalItems) { %>
-        <% for(i = pagination.currentPage + 1; i <= pagination.currentPage + pagination.offset; i++) { %>
+      <% if (cantLinks != lastPage) { %>
+        <% for(i = currentPage + 1; i <= currentPage + offset; i++) { %>
           <li><a href="<%= pagination.url + '?page=' + i %>"><%= i %></a></li>
         <% } %>
       <% } %>
 
       <%
-        if (pagination.viewPage == pagination.totalItems){
-          pagination.offset = 0;
+        if (cantLinks == lastPage){
+          offset = 0;
         }
       %>
     <% } %>
 
-    <% if (pagination.currentPage > pagination.totalItems - pagination.offset) { %>
-      <% for(i = pagination.totalItems - pagination.viewPage + 1; i <= pagination.totalItems; i++) { %>
-        <% if (i === pagination.currentPage) {%>
+    <% if (currentPage > lastPage - offset) { %>
+      <% for(i = lastPage - cantLinks + 1; i <= lastPage; i++) { %>
+        <% if (i == currentPage) {%>
           <li class="active"><span><%= i %></span></li>
         <% } else { %>
           <li><a href="<%= pagination.url + '?page=' + i %>"><%= i %></a></li>
@@ -71,15 +77,15 @@
     <% } %>
 
     <!-- Botón para navegar a la página siguinete -->
-    <% if (pagination.currentPage < pagination.totalItems) {%>
-      <li><a href="<%= pagination.url + '?page=' + (pagination.currentPage + 1) %>" rel="next">&raquo;</a></li>
+    <% if (currentPage < maxPage) {%>
+      <li><a href="<%= pagination.url + '?page=' + nextPage %>" rel="next">&raquo;</a></li>
     <% } else { %>
       <li class="disabled"><span>&raquo;</span></li>
     <% } %>
 
     <!-- Botón para navegar a la última página -->
-    <% if (pagination.currentPage < pagination.totalItems) {%>
-      <li><a href="<%= pagination.url + '?page=' + pagination.totalItems %>" rel="next">&raquo;&raquo;</a></li>
+    <% if (currentPage < maxPage) {%>
+      <li><a href="<%= pagination.url + '?page=' + lastPage %>" rel="next">&raquo;&raquo;</a></li>
     <% } else { %>
       <li class="disabled"><span>&raquo;&raquo;</span></li>
     <% } %>

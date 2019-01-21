@@ -14,4 +14,6 @@ router.get('/create', isAuth, equipmentController.getCreate);
 
 router.post('/', isAuth, equipmentValidate.validatePost ,equipmentController.postStore);
 
+router.post('/update/:id', isAuth, equipmentController.postUpdate);
+
 module.exports = router;

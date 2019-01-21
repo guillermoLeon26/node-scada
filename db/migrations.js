@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const user = require('../app/models/user');
+const Equipo = require('../app/models/equipment');
 
 data = {
   email: 'gleon@gmail.com',
@@ -16,4 +17,23 @@ const crearUsuario = () => {
     });
 }
 
-crearUsuario();
+const crearEquipos = () => {
+  db.connect()
+    .then(result => {
+      for (let i = 17; i < 22; i++) {
+        const data = `COMP${i+1}`;
+        Equipo.registrarEquipo({ 
+          codigo: data, 
+          nombre: data, 
+          marca: data, 
+          modelo: data
+        }) 
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
+// crearUsuario();
+crearEquipos();

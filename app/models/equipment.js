@@ -18,7 +18,7 @@ const equipmentSchema = new Schema({
   marca: {
     type: String,
     required: true
-  },  
+  },
   estado: {
     type: Boolean,
     default: true
@@ -28,11 +28,30 @@ const equipmentSchema = new Schema({
 equipmentSchema.statics.equipos = async function (req) {
   const currentPage = req.query.page || 1;
   const perPage = 5;
-
+  
   try {
+    const totalItems = await this.find().countDocuments();
+    const equipos = await this.find()
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
     
+    return {
+      equipos: equipos,
+      pagination: {
+        currentPage: currentPage,
+        totalItems: totalItems,
+        perPage: perPage,
+        maxPage: Math.ceil(totalItems/perPage),
+        viewPage: 5,
+        offset: 2,
+        url: '/admin/equipment'
+      }
+    }
   } catch (error) {
-    
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    throw error;
   }
 }
 
@@ -57,6 +76,25 @@ equipmentSchema.statics.registrarEquipo = async function (data) {
     });
 
     return equip;
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    throw error;
+  }
+}
+
+equipmentSchema.statics.actualizarEquipo = async function (id, data) {
+  try {
+    const equipo = await this.findById(id);
+
+    equipo.codigo = data.codigo || equipo.codigo;
+    equipo.nombre = data.nombre || equipo.nombre;
+    equipo.modelo = data.modelo || equipo.modelo;
+    equipo.marca = data.marca || equipo.marca;
+    equipo.estado = data.estado || equipo.estado;
+
+    await equipo.save();
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;

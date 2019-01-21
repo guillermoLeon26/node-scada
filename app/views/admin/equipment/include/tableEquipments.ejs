@@ -17,28 +17,43 @@
     <table class="table table-hover">
       <thead>
         <tr>
+          <th>Codigo</th>
           <th>Nombre</th>
           <th>Modelo</th>
           <th>Marca</th>
-          <th>Ubicacion</th>
           <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Compresor</td>
-          <td>ACME-78</td>
-          <td>General Electric</td>
-          <td>Sengundo nivel estrusora 2</td>
-          <th>
-            <button type="submit" class="btn btn-danger">Desactivar</button>
-          </th>
-        </tr>
+        <% equipos.forEach(function(equipo){ %>
+          <tr>
+            <td><%= equipo.codigo %></td>
+            <td><%= equipo.nombre %></td>
+            <td><%= equipo.modelo %></td>
+            <td><%= equipo.marca %></td>
+            <th>
+              <% if (equipo.estado) { %>
+                <form action="/admin/equipment/update/<%= equipo._id %>" method="POST" style="display: inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="estado" value="false">
+                  <button type="submit" class="btn btn-danger">Desactivar</button>
+                </form>
+              <% } else { %>
+                <form action="/admin/equipment/update/<%= equipo._id %>" method="POST" style="display: inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="estado" value="true">
+                  <button type="submit" class="btn btn-primary">Activar</button>
+                </form>
+              <% } %>
+              <button type="submit" class="btn btn-success">Sensores</button>
+            </th>
+          </tr>
+        <% }); %>
       </tbody>
     </table>
   </div>
   <!-- /.box-body -->
   <div class="box-footer clearfix">
-    
+    <%- include('../../../layout/pagination') %>
   </div>
 </div>

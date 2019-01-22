@@ -1,0 +1,61 @@
+<div class="box box-primary">
+  <div class="box-header">
+    <h3 class="box-title"></h3>
+    <a href="/admin/equipment/create" class="btn btn-success"><i class="fa fa-plus"></i></a>
+    <div class="box-tools">
+      <div class="input-group input-group-sm" style="width: 150px;">
+        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+
+        <div class="input-group-btn">
+          <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /.box-header -->
+  <div class="box-body table-responsive no-padding">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Tipo</th>
+          <th>Unidad</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Serie</th>
+          <th>Ubicacion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sensores.forEach(function(sensor){ %>
+          <tr>
+            <td><%= sensor.tipo %></td>
+            <td><%= sensor.unidad %></td>
+            <td><%= sensor.marca %></td>
+            <td><%= sensor.modelo %></td>
+            <td><%= sensor.serie %></td>
+            <td><%= sensor.ubicacion %></td>
+            <th>
+              <% if (equipo.estado) { %>
+                <form action="#" method="POST" style="display: inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="estado" value="false">
+                  <button type="submit" class="btn btn-danger">Desactivar</button>
+                </form>
+              <% } else { %>
+                <form action="#" method="POST" style="display: inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="estado" value="true">
+                  <button type="submit" class="btn btn-primary">Activar</button>
+                </form>
+              <% } %>
+            </th>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </div>
+  <!-- /.box-body -->
+  <div class="box-footer clearfix">
+    <%- include('../../../layout/pagination') %>
+  </div>
+</div>

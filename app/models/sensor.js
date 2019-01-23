@@ -45,6 +45,8 @@ sensorSchema.statics.sensores =  async function (req) {
   const idEquipo = req.params.idEquipment;
   const perPage = 5;
 
+  console.log(idEquipo);
+
   try {
     const equipo = await Equipment.findById(idEquipo);
     const totalItems = await this.find({ idEquipo: idEquipo }).countDocuments();
@@ -66,6 +68,39 @@ sensorSchema.statics.sensores =  async function (req) {
       }
 
     }
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    throw error;
+  }
+}
+
+sensorSchema.statics.registrar = async function (data) {
+  const { tipo, unidad, marca, modelo, serie, ubicacion, idEquipment } = data;
+  
+  try {
+    const equipo = await Equipment.findById(idEquipment);
+
+    if (!equipo) {
+      throw new Error();
+    }
+
+    const sensor = await this.create({
+      tipo: tipo,
+      unidad: unidad,
+      marca: marca,
+      modelo: modelo,
+      serie: serie,
+      ubicacion: ubicacion,
+      idEquipo: idEquipment
+    });
+
+    equipo.sensores.push(sensor);
+
+    await equipo.save();
+
+    return sensor;
   } catch (error) {
     if (!error.statusCode) {
       error.statusCode = 500;

@@ -7,7 +7,8 @@
   var offset = pagination.offset;
   var cantLinks = pagination.viewPage;
   
-  if (cantLinks > lastPage) {
+  if (cantLinks > maxPage) {
+    cantLinks = 1;
     offset = 0;
   }
 %>
@@ -31,7 +32,7 @@
 
     <!-- Mostrar la numeración de las páginas, partiendo de la página actual hasta el maximo definido en $pagination.maxPages -->
     <% if (currentPage <= cantLinks - offset) { %>
-      <% for(i = firstPage; i <= maxPage; i++) { %>
+      <% for(i = firstPage; i <= cantLinks; i++) { %>
         <% if (i == currentPage) {%>
           <li class="active"><span><%= i %></span></li>
         <% } else { %>

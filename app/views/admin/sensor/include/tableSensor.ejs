@@ -23,6 +23,7 @@
           <th>Modelo</th>
           <th>Serie</th>
           <th>Ubicacion</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -34,21 +35,23 @@
             <td><%= sensor.modelo %></td>
             <td><%= sensor.serie %></td>
             <td><%= sensor.ubicacion %></td>
-            <th>
-              <% if (equipo.estado) { %>
-                <form action="#" method="POST" style="display: inline;">
+            <td>
+              <% if (sensor.estado) { %>
+                <form action="/admin/sensor/update/<%= sensor._id %>" method="POST" style="display: inline;">
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <input type="hidden" name="estado" value="false">
+                  <input type="hidden" name="idEquipment" value="<%= equipo._id %>">
                   <button type="submit" class="btn btn-danger">Desactivar</button>
                 </form>
               <% } else { %>
-                <form action="#" method="POST" style="display: inline;">
+                <form action="/admin/sensor/update/<%= sensor._id %>" method="POST" style="display: inline;">
                   <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                   <input type="hidden" name="estado" value="true">
+                  <input type="hidden" name="idEquipment" value="<%= equipo._id %>">
                   <button type="submit" class="btn btn-primary">Activar</button>
                 </form>
               <% } %>
-            </th>
+            </td>
           </tr>
         <% }); %>
       </tbody>

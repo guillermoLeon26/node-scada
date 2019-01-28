@@ -4,6 +4,6 @@ const equipmentController = require('../../controller/api/equipment');
 
 const router = express.Router();
 
-router.post('/index', equipmentController.postIndex);
+router.get('/index', equipmentController.getIndex);
 
 module.exports = router;

@@ -23,14 +23,10 @@ const equipmentSchema = new Schema({
     type: Boolean,
     default: true
   },
-  sensores: [
-    {
-      sensorId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Sensor'
-      }
-    }
-  ]
+  sensores: [{
+      type: Schema.Types.ObjectId,
+      ref: 'Sensor'
+  }]
 });
 
 equipmentSchema.statics.equipos = async function (req) {

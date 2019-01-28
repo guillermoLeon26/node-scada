@@ -1,7 +1,7 @@
-const equipment = require('../../models/equipment');
+const Equipment = require('../../models/equipment');
 
-exports.postIndex = async (req, res, next) => {
-  const equipos = await equipment.find().populate('sensores');
+exports.getIndex = async (req, res, next) => {
+  const equipos = await Equipment.find().populate('sensores');
 
   res.status(200).json({
     equipos: equipos

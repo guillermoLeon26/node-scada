@@ -34,10 +34,19 @@ app.use(errorController.get404);
 app.use((error, req, res, next) => {
   if (req.is('application/json')) {
     const status = error.statusCode || 500;
-    const errors = error.lista.map((item, index) => {
-      return item.msg
-    });
-    res.status(status).json({ errors: errors });
+    var errors = [];
+
+    if (error.lista) {
+      console.log(error.lista)
+      errors = error.lista.map((item, index) => {
+        return item.msg
+      });
+
+      res.status(status).json({ errors: errors });
+    }
+
+    res.status(status).json({ error: error });
+   
   } else {
     res.status(500).render('error/500', {
       isAuthenticated: req.session.isLoggedIn

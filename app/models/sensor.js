@@ -33,6 +33,14 @@ const sensorSchema = new Schema({
     type: Boolean,
     default: true
   },
+  datos: {
+    type: Array,
+    default: []
+  },
+  fecha: {
+    type: Array,
+    default: []
+  },
   idEquipo: {
     type: Schema.Types.ObjectId,
     ref: 'Equipment',

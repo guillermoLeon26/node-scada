@@ -5,6 +5,9 @@ const equipmentController = require('../../controller/api/equipment');
 
 const router = express.Router();
 
+// /api/equipment
+
 router.get('/index', isAuth, equipmentController.getIndex);
+router.post('/sensorBroadcasting', equipmentController.postEmitBroadcasting);
 
 module.exports = router;

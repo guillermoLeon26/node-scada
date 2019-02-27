@@ -4,6 +4,7 @@ const csrf = require('../../../config/csrf');
 const errorController = require('../../controller/error');
 
 const User = require('../../models/user');
+const initRoutes = require('./init');
 const homeRoutes = require('./home');
 const authRoutes = require('./auth');
 const userRoutes = require('./user');
@@ -35,6 +36,7 @@ module.exports = app => {
   });
   // ----------------------------------------------------------------
 
+  app.use('/', initRoutes);
   app.use('/admin', homeRoutes);
   app.use('/admin', authRoutes);
   app.use('/admin/user', userRoutes);

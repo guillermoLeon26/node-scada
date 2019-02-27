@@ -35,5 +35,5 @@ const crearEquipos = () => {
     });
 }
 
-// crearUsuario();
-crearEquipos();
+crearUsuario();
+// crearEquipos();

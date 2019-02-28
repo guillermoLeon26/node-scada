@@ -9,7 +9,7 @@ exports.getIndex = async (req, res, next) => {
   });
 }
 
-exports.postEmitBroadcasting = (req, res, next) => {
+exports.postEmitBroadcasting = (req, res, next) => { 
   io.getIO().emit('sensor', {
     data: req.body
   });

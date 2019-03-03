@@ -33,6 +33,7 @@ app.use(errorController.get404);
 //--------------------Manejo de pagina de errores------------------------
 // -------Activar en produccion, por ahora sirve para ver errores en render de las vistas
 app.use((error, req, res, next) => {
+  console.log(error);
   if (req.is('application/json')) {
     const status = error.statusCode || 500;
     var errors = [];

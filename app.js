@@ -59,6 +59,7 @@ app.use((error, req, res, next) => {
 db.connect()
   .then(result => {
     const server = app.listen(3000);
+    require('./app/jobs/aws/device')();
     const io = socket.init(server);
     io.on('connection', socket => {
       console.log('Client connected');

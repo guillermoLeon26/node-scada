@@ -11,6 +11,7 @@
   "author": "Eloquent",
   "license": "MIT",
   "dependencies": {
+    "aws-iot-device-sdk": "^2.2.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "connect-mongodb-session": "^2.0.6",

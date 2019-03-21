@@ -39,8 +39,8 @@ const crearEquipos = () => {
 const crearIotCredentials = () => {
   db.connect().then(result => {
     const data = {
-      accessKeyID: 'AKIAIQAVQ3XUHQSMX5YQ',
-      secretAccessKey: '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'
+      accessKeyID: '',
+      secretAccessKey: ''
     }
     IotCredentials.create(data, (err, reg) => {
       if (err) {

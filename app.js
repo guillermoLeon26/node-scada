@@ -3,6 +3,10 @@ const path = require('path');
 const express = require('express');
 
 const db = require('./config/db');
+<<<<<<< HEAD
+=======
+// const socket = require('./config/socket');
+>>>>>>> 1dd99f88f4a5ab6904398eaf2a040042e75a19b4
 const session = require('./config/session');
 const webRoutes = require('./app/routes/web/index');
 const apiRoutes = require('./app/routes/api/index');
@@ -33,6 +37,7 @@ app.use(errorController.get404);
 //--------------------Manejo de pagina de errores------------------------
 // -------Activar en produccion, por ahora sirve para ver errores en render de las vistas
 app.use((error, req, res, next) => {
+  console.log(error);
   if (req.is('application/json')) {
     const status = error.statusCode || 500;
     var errors = [];
@@ -57,7 +62,15 @@ app.use((error, req, res, next) => {
 
 db.connect()
   .then(result => {
+<<<<<<< HEAD
     app.listen(3000);
+=======
+    const server = app.listen(3000);
+    // const io = socket.init(server);
+    // io.on('connection', socket => {
+    //  console.log('Client connected');
+    // });
+>>>>>>> 1dd99f88f4a5ab6904398eaf2a040042e75a19b4
   })
   .catch(err => {
     console.log(err);

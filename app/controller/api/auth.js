@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator/check');
 
 const User = require('../../models/user');
+const IotCredentials = require('../../models/iotCredentials');
 
 exports.postLogin = async (req, res, next) => {
   try {
@@ -25,10 +26,15 @@ exports.postLogin = async (req, res, next) => {
       { expiresIn: '1h' }
     );
 
+    const arrayIot = await IotCredentials.find();
+    const regIot = arrayIot[0];
+
     res.status(200).json({
       user: {
         id: user._id.toString(),
-        email: user.email
+        email: user.email,
+        accessKeyID: regIot.accessKeyID,
+        secretAccessKey: regIot.secretAccessKey
       },
       token: token
     });

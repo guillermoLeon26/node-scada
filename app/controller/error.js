@@ -1,5 +1,4 @@
 exports.get404 = (req, res, next) => {
-  console.log('Es json', req.is('application/json'));
   if (req.is('application/json')) {
     return res.status(404).json({
       message: 'Ruta no encontrada'

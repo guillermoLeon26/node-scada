@@ -8,6 +8,6 @@ const router = express.Router();
 // /api/equipment
 
 router.get('/index', isAuth, equipmentController.getIndex);
-router.post('/sensorBroadcasting', equipmentController.postEmitBroadcasting);
+router.get('/getInfoScada', isAuth,equipmentController.getInfoScada);
 
 module.exports = router;

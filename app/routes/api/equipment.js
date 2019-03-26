@@ -8,6 +8,7 @@ const router = express.Router();
 // /api/equipment
 
 router.get('/index', isAuth, equipmentController.getIndex);
-router.get('/getInfoScada', isAuth,equipmentController.getInfoScada);
+router.get('/getInfoScada', isAuth, equipmentController.getInfoScada);
+router.get('/getHistorySensor', equipmentController.getHistorySensor)
 
 module.exports = router;

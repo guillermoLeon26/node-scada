@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const AWS = require('../../../config/aws');
 const Equipment = require('../../models/equipment');
 
@@ -23,14 +25,19 @@ exports.getInfoScada = (req, res, next) => {
 exports.getHistorySensor = (req, res, next) => {
   var docClient = new AWS.DynamoDB.DocumentClient();
 
+  var fecha1 = moment('26/3/2019 22:33:59', 'DD/M/YYYY HH:mm:ss').unix(); // 1553657639 - 26/3/2019 22:33:59
+  var fecha2 = moment('26/3/2019 23:02:25', 'DD/M/YYYY HH:mm:ss').unix(); // 1553658361 - 26/3/2019 22:46:01
+
   var params = {
-    TableName : 'sensores_scada',
-    KeyConditionExpression: 'fecha = :idx',
+    TableName : 'scada_prueba',
+    KeyConditionExpression: 'topic = :topic AND #tiempo BETWEEN :fecha1 AND :fecha2',
+    ExpressionAttributeNames: {
+      '#tiempo': 'timestamp'
+    },
     ExpressionAttributeValues: {
-      ':idx': 3
-      //':ini': '1',
-      //':fin': '2',
-      //':mod': '5756'
+      ':topic': 'prueba/maquina',
+      ':fecha1': fecha1, 
+      ':fecha2': fecha2 
     }
   }
 
@@ -38,12 +45,7 @@ exports.getHistorySensor = (req, res, next) => {
     if (err) {
       console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
     } else {
-      console.log(data);
       res.status(200).send(data);
     }
   });
 }
-/*
-SELECT concat(topic(), '/', timestamp()) AS id, modelo, sensor, timestamp() AS timestamp FROM 'prueba/#' WHERE save = true
-*/
-

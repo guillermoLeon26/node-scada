@@ -1,3 +1,5 @@
+const moment = require('moment');
+
 const AWS = require('../../../config/aws');
 const Equipment = require('../../models/equipment');
 
@@ -17,5 +19,32 @@ exports.getInfoScada = (req, res, next) => {
     if (err) next(err.stack);
     
     res.status(200).send(data);
+  });
+}
+
+exports.getHistorySensor = (req, res, next) => {
+  var docClient = new AWS.DynamoDB.DocumentClient();
+  var fecha1 = moment(req.body.fecha1, 'DD/M/YYYY HH:mm:ss').unix(); // 1553657639 - 26/3/2019 22:33:59
+  var fecha2 = moment(req.body.fecha2, 'DD/M/YYYY HH:mm:ss').unix(); // 1553658361 - 26/3/2019 22:46:01
+
+  var params = {
+    TableName : 'scada_prueba',
+    KeyConditionExpression: 'topic = :topic AND #tiempo BETWEEN :fecha1 AND :fecha2',
+    ExpressionAttributeNames: {
+      '#tiempo': 'timestamp'
+    },
+    ExpressionAttributeValues: {
+      ':topic': 'prueba/maquina',
+      ':fecha1': fecha1, 
+      ':fecha2': fecha2 
+    }
+  }
+
+  docClient.query(params, function(err, data) {
+    if (err) {
+      console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
+    } else {
+      res.status(200).send(data);
+    }
   });
 }

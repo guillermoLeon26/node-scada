@@ -9,6 +9,6 @@ const router = express.Router();
 
 router.get('/index', isAuth, equipmentController.getIndex);
 router.get('/getInfoScada', isAuth, equipmentController.getInfoScada);
-router.get('/getHistorySensor', equipmentController.getHistorySensor)
+router.post('/getHistorySensor', equipmentController.getHistorySensor)
 
 module.exports = router;

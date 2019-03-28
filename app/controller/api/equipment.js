@@ -24,9 +24,8 @@ exports.getInfoScada = (req, res, next) => {
 
 exports.getHistorySensor = (req, res, next) => {
   var docClient = new AWS.DynamoDB.DocumentClient();
-
-  var fecha1 = moment('26/3/2019 22:33:59', 'DD/M/YYYY HH:mm:ss').unix(); // 1553657639 - 26/3/2019 22:33:59
-  var fecha2 = moment('26/3/2019 23:02:25', 'DD/M/YYYY HH:mm:ss').unix(); // 1553658361 - 26/3/2019 22:46:01
+  var fecha1 = moment(req.body.fecha1, 'DD/M/YYYY HH:mm:ss').unix(); // 1553657639 - 26/3/2019 22:33:59
+  var fecha2 = moment(req.body.fecha2, 'DD/M/YYYY HH:mm:ss').unix(); // 1553658361 - 26/3/2019 22:46:01
 
   var params = {
     TableName : 'scada_prueba',

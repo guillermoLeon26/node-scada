@@ -26,7 +26,7 @@ exports.getHistorySensor = (req, res, next) => {
   var docClient = new AWS.DynamoDB.DocumentClient();
   var fecha1 = moment(req.body.fechaInicial, 'YYYY-MM-DD HH:mm:ss').unix(); // 1553657639 - 26/3/2019 22:33:59
   var fecha2 = moment(req.body.fechaFinal, 'YYYY-MM-DD HH:mm:ss').unix(); // 1553658361 - 26/3/2019 22:46:01
-  var topic = req.body.topic;
+  var topic = req.body.equipo;
 
   var params = {
     TableName : 'scada_prueba',
@@ -41,11 +41,22 @@ exports.getHistorySensor = (req, res, next) => {
     }
   }
 
-  docClient.query(params, function(err, data) {
+  docClient.query(params, (err, data) => {
     if (err) {
       console.error("Unable to query. Error:", JSON.stringify(err, null, 2));
     } else {
-      res.status(200).send(data);
+      var fechas = [];
+      var sensor = [];
+
+      data.Items.forEach(item => {
+        fechas.push(moment.unix(item.timestamp).format('DD/MM/YYYY HH:mm:ss'));
+        sensor.push(item.sensor.find(sen => sen.modelo ===  req.body.sensor).valor);
+      });
+
+      res.status(200).json({
+        fechas: fechas,
+        sensor: sensor
+      });
     }
   });
 }
